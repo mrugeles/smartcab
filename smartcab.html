@@ -12371,13 +12371,13 @@ You may also use a decaying function for $\alpha$ (the learning rate) if you so 
 <p><strong>Answer:</strong></p>
 <p><strong>What decaying function was used for epsilon (the exploration factor)?</strong></p>
 <p>$$\epsilon = \cos(at), \textrm{for } 0 &lt; a &lt; 1$$</p>
-<p><strong>Approximately how many training trials were needed for your agent before begining testing?</strong> 2199</p>
+<p><strong>Approximately how many training trials were needed for your agent before begining testing?</strong> 1885</p>
 <p><strong>What epsilon-tolerance and alpha (learning rate) did you use? Why did you use them?</strong></p>
-<p>tolerance=0.0007, alpha = 0.005. I started randomly, and then I noticed the Total Bad Actions started to drop by minimizing the learning rate and keeping the exploration factor in 1. Then I also saw that sometimes the Total Bad Actions would continue the tendency to drop, so I would decrease the tolerance to allow the agent keeping using that same learing rate for more time, that is, lowering the limit to increase time trials and allow to cover more space.</p>
+<p>tolerance=0.00035, alpha = 0.0025. I started randomly, and then I noticed the Total Bad Actions started to drop by minimizing the learning rate and keeping the exploration factor in 1. Then I also saw that sometimes the Total Bad Actions would continue the tendency to drop, so I would decrease the tolerance to allow the agent keeping using that same learing rate for more time, that is, lowering the limit to increase time trials and allow to cover more space.</p>
 <p><strong>How much improvement was made with this Q-Learner when compared to the default Q-Learner from the previous section?</strong></p>
 <p>With the optimized Q-Learner the relative frecuency of bad actions shows the same tendency to drop. The average rewards and reliability now tend to increase as the agent now has the ability to learn. In contrast, default Q-Learner  bad actions, rewards and reliability remain constant. That's because the car wasn't moving at all and not keeping track of any incidents, so the initial state would remain pretty much the same during all the simulation.</p>
 <p><strong>Would you say that the Q-Learner results show that your driving agent successfully learned an appropriate policy?</strong></p>
-<p>The simulation ran with 100 tests with A+ score for Safety and a A score for Realibility. The q-table shows 384 states which mean the agent was able to explore all the space and most of the actions in every state has a reward value (different than 0), that means the agent has a good knowlegde from the environment and has build a good policy to move around the environment.</p>
+<p>The simulation ran with 100 tests with A score for Safety and a A score for Realibility. The q-table shows 384 states which mean the agent was able to explore all the space and most of the actions in every state has a reward value (different than 0), that means the agent has a good knowlegde from the environment and has build a good policy to move around the environment.</p>
 <p><strong>Are you satisfied with the safety and reliability ratings of the Smartcab?</strong> Yes, but it took a good time to learn that policy, forcing the agent to know all possible states will take some time. Another parameters like a bigger tolerance will allow the agent to learn fast but it will necesary to reduce the test numbers to reach a good score, but that would be more like to hide the fact that the agent doesn't fully knows its environment.</p>
 
 </div>
@@ -12441,7 +12441,7 @@ You may also use a decaying function for $\alpha$ (the learning rate) if you so 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">eval_policy</span> <span class="kn">import</span> <span class="n">EvalPolicy</span>
@@ -12576,118 +12576,13 @@ You may also use a decaying function for $\alpha$ (the learning rate) if you so 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">policy_comparison_df</span><span class="p">[</span><span class="n">policy_comparison_df</span><span class="p">[</span><span class="s1">&#39;Agent Action&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">policy_comparison_df</span><span class="p">[</span><span class="s1">&#39;Optimal Action&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-<div class="output_html rendered_html output_subarea ">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>State</th>
-      <th>Agent Action</th>
-      <th>Optimal Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1</th>
-      <td>forward-red-forward-right-forward</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>forward-red-left-forward-right</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>left-green-forward-None-left</td>
-      <td>right</td>
-      <td>right</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>forward-green-None-forward-right</td>
-      <td>forward</td>
-      <td>forward</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>forward-green-None-left-left</td>
-      <td>forward</td>
-      <td>forward</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>forward-green-None-left-right</td>
-      <td>forward</td>
-      <td>forward</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>left-red-forward-left-forward</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>left-red-left-right-right</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>right-red-forward-right-forward</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>right-green-None-None-None</td>
-      <td>right</td>
-      <td>right</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
 </div>
 </div>
 
