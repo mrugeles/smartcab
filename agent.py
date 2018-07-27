@@ -18,15 +18,13 @@ class LearningAgent(Agent):
         self.Q = dict()          # Create a Q-table which will be a dictionary of tuples
         self.epsilon = epsilon   # Random exploration factor
         self.alpha = alpha       # Learning factor
-
+        random.seed(1243)
 
         ###########
         ## TO DO ##
         ###########
         # Set any additional class parameters as needed
         self.trial = 0
-        self.actionType = ""
-
 
     def reset(self, destination=None, testing=False):
         """ The reset function is called at the beginning of each trial.
@@ -52,6 +50,7 @@ class LearningAgent(Agent):
             #self.epsilon = 1/(float(self.trial)**2)
             #self.epsilon =  math.exp(-1*self.alpha*self.trial)
             self.epsilon = math.fabs(math.cos(self.alpha*self.trial))
+            #self.epsilon = math.cos(self.alpha*self.trial)
 
 
         return None
@@ -74,7 +73,7 @@ class LearningAgent(Agent):
         # constraints in order for you to learn how to adjust epsilon and alpha,
         # and thus learn about the balance between exploration and exploitation.
         # With the hand-engineered features, this learning process gets entirely negated.
-
+        print("deadline: %s" % (deadline))
         # Set 'state' as a tuple of relevant data for the agent
         state = "%s-%s-%s-%s-%s" % (waypoint, inputs["light"], inputs["oncoming"], inputs["right"], inputs["left"])
         return state
@@ -100,7 +99,6 @@ class LearningAgent(Agent):
             for index, value in enumerate(stateValues):
                 if value == maxValue:
                     arrayIndex.append(index)
-            print len(arrayIndex)
             randomIndex = arrayIndex[random.randint(0, len(arrayIndex)-1)]
             maxQ = stateKeys[randomIndex]
 
@@ -119,14 +117,12 @@ class LearningAgent(Agent):
         if state not in self.Q:
             init_values = {k: 0.0 for k in self.valid_actions}
             self.Q[state] = init_values
-
         return
 
 
     def choose_action(self, state):
         """ The choose_action function is called when the agent is asked to choose
             which action to take, based on the 'state' the smartcab is in. """
-        print "choose_action"
         # Set the agent state and default action
         self.state = state
         self.next_waypoint = self.planner.next_waypoint()
@@ -139,17 +135,12 @@ class LearningAgent(Agent):
         # When learning, choose a random action with 'epsilon' probability
         # Otherwise, choose an action with the highest Q-value for the current state
         # Be sure that when choosing an action with highest Q-value that you randomly select between actions that "tie".
-        lenValidAction = len(self.valid_actions) - 1
         randValue = random.uniform(0,1)
         if self.learning is False:
-            #action = self.valid_actions[random.randint(0, lenValidAction)]
             action = random.choice(self.valid_actions)
         elif self.epsilon > randValue:
-            self.actionType = "EPSILON"
-            #action = self.valid_actions[random.randint(0, lenValidAction)]
             action = random.choice(self.valid_actions)
         else:
-            self.actionType = "MAX_Q"
             action = self.get_maxQ(state)
 
 
@@ -168,7 +159,6 @@ class LearningAgent(Agent):
         #   Use only the learning rate 'alpha' (do not use the discount factor 'gamma')
         if self.learning is True:
             self.Q[state][action] = (1 - self.alpha)*self.Q[state][action] + self.alpha*reward
-
         return
 
 
@@ -180,8 +170,8 @@ class LearningAgent(Agent):
         state = self.build_state()          # Get current state
         self.createQ(state)                 # Create 'state' in Q-table
         action = self.choose_action(state)  # Choose an action
-        reward = self.env.act(self, action) # Receive a reward
-        print("StepResult: %s,%s,%s" % (self.trial, self.actionType, reward))
+        print("Selected action: {}".format(action))
+        reward = self.env.act(self, action)  # Receive a reward
         self.learn(state, action, reward)   # Q-learn
 
         return
@@ -220,14 +210,14 @@ def run():
     #   display      - set to False to disable the GUI if PyGame is enabled
     #   log_metrics  - set to True to log trial and simulation results to /logs
     #   optimized    - set to True to change the default log file name
-    sim = Simulator(env, display = False, update_delay = 0.01, log_metrics = True, optimized=True)
+    sim = Simulator(env, display=False, update_delay=.0001, log_metrics=True, optimized=True)
 
     ##############
     # Run the simulator
     # Flags:
     #   tolerance  - epsilon tolerance before beginning testing, default is 0.05
     #   n_test     - discrete number of testing trials to perform, default is 0
-    sim.run(n_test = 5, tolerance=0.005)
+    sim.run(n_test=100, tolerance=0.0007)
 
 
 if __name__ == '__main__':
